@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Blog — Cory Wagaman-Eure{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/blog.css') }}">
+{% endblock %}
+
+{% block body_class %}blog-page{% endblock %}
+
+{% block body %}
+  <main class="page-shell">
+    <header class="page-header">
+      <a class="crumb" href="{{ url_for('site.home') }}">← Home</a>
+      <h1>Blog</h1>
+      <p>Daily notes on things I'm learning.</p>
+      <nav class="sub-nav" aria-label="Blog navigation">
+        <a href="#posts">Posts</a>
+        <span aria-hidden="true">|</span>
+        <a href="https://medium.com/@cory.wagamaneure" target="_blank" rel="noopener">Medium</a>
+      </nav>
+    </header>
+
+    <section class="page-section" id="posts" aria-labelledby="posts-heading">
+      <h2 class="visually-hidden" id="posts-heading">Posts</h2>
+      <div class="filter-bar" aria-label="Filter posts">
+        <span>Filter:</span>
+        <button class="filter-btn active" type="button" data-filter="all">All</button>
+        <button class="filter-btn" type="button" data-filter="defi">DeFi</button>
+        <button class="filter-btn" type="button" data-filter="microstructure">Microstructure</button>
+        <button class="filter-btn" type="button" data-filter="prob">Probability and Stats</button>
+      </div>
+
+      <div class="entry-grid" id="post-grid">
+        {% for post in posts %}
+          <article class="entry" data-tags="{{ post.tags | join(' ') }}">
+            <header>
+              <h3>
+                <a class="project-link" href="{{ url_for('site.blog_post', file=post.filename) }}">{{ post.title }}</a>
+              </h3>
+              <div class="meta">
+                <time datetime="{{ post.date }}">{{ post.display_date }}</time>
+                <span class="tag">{{ post.tag_label }}</span>
+              </div>
+            </header>
+            <p>{{ post.summary }}</p>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/blog.js') }}" defer></script>
+{% endblock %}

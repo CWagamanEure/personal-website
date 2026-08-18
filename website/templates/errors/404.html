@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Page not found — Cory Wagaman-Eure{% endblock %}
+
+{% block body %}
+  <main class="page-shell narrow-shell error-page">
+    <p class="muted">404</p>
+    <h1>Page not found</h1>
+    <p>The page you requested does not exist.</p>
+    <a class="project-link" href="{{ url_for('site.home') }}">← Return home</a>
+  </main>
+{% endblock %}
