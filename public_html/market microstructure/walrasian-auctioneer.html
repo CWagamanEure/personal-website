@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Market Microstructure Theory - The Walrasian Auctioneer</title>
+  <link rel="stylesheet" href="../style.css"/>
+  <style>
+    .wrap{max-width:800px;margin:0 auto;padding:64px 20px}
+    .crumb{color:#a7ffeb;text-decoration:none;font-size:.95rem}
+    .crumb:hover{text-decoration:underline}
+    .post h1{font-size:2rem;margin:10px 0 8px}
+    .meta{opacity:.85;font-size:.9rem;margin-bottom:16px}
+  </style>
+</head>
+<body>
+  <main class="wrap post">
+    <p><a class="crumb" href="./">← Lab Index</a></p>
+
+    <h1>Market Microstructure Theory - The Walrasian Auctioneer</h1>
+    <div class="meta">By Cory Wagaman-Eure · July 2025 · Theory · Micro</div>
+
+    <p>As someone pretty new to the field of trading, I was surprised by how complicated the systems behind market making really are. What seems like a simple “buy/sell” button actually hides an entire structure of auctions and strategy. As part of my attempt to understand microstructure and reflexivity within the niche of decentralized finance and automated market making, I’m going to try and explain what I’ve learned so far– both to help others and to ensure I truly understand it myself.</p>
+
+    <p>It all starts with the Walrasion Auctioneer– a kind of theoretical system designed to find what is called the “market clearing price.” In this system, traders submit the prices they are willing to trade at, and an auctioneer uses those to announce a trial price. This process happens in a recursive manner where traders adjust their willingness to trade until the supply equals the demand.</p>
+
+    <p>What distinguishes this from the typical auction that you might see on TV is that everyone participating is already interested in trading the asset. And just like in any auction, the way people bid depends on what they think others are willing to pay. That’s what pushes the price in one direction or the other.</p>
+
+    <p>The issue with this model is that it completely disregards the role and value of time. Not every trader can wait through multiple rounds of price discovery. Some people value immediacy in trading. That urgency introduces a completely new separate supply and demand curve. This brings up a major issue: speed is not free.</p>
+
+    <p>A comparison can be made to more modern trading venues such as dark pools. While they serve a range of purposes such as hiding larger trades from the public order book, they also have a tradeoff. Trading within these pools gives up speed and certainty in exchange for stealth and better pricing. Similarly to the Walrasian model, you submit an order, wait for a match, and maybe get filled. As opposed to something like the NYSE, where execution is near-instant and firms pay millions just for greater server proximity to an exchange.</p>
+
+    <p>Today, there does exist a real-world version of this auction style still in use, being the London Gold Fixing. In this meeting, five bullion banks go back and forth, stating whether they are a net buyer or net seller at the given price level. When everyone agrees, the opening price for spot gold is determined.</p>
+
+    <p>Coming soon I’ll be coding this auction system out as a Solidity smart contract to explore how it works on-chain.</p>
+  </main>
+</body>
+</html>

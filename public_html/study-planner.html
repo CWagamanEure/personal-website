@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Study Planner</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      background-color: #1f3b57;
+      color: #cbd5e1;
+      font-family: monospace;
+      padding: 40px;
+    }
+       #home-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: #2a4c6b;
+  color: white;
+  padding: 10px;
+  border-radius: 50%;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+}
+
+#home-btn:hover {
+  background-color: #3b5d7a;
+}
+
+#home-btn i {
+  font-size: 18px;
+}
+
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .input-section {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    select, input[type="text"], button {
+      padding: 10px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+    }
+
+    select {
+      background-color: #2d4a68;
+      color: #cbd5e1;
+    }
+
+    button {
+      background-color: #3a5a78;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #547293;
+    }
+
+    .tasks-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .day-section {
+      margin-bottom: 25px;
+    }
+
+    .day-section h2 {
+      border-bottom: 1px solid #3a5a78;
+      padding-bottom: 4px;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: #2d4a68;
+      padding: 8px;
+      margin-bottom: 6px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .delete {
+      background: none;
+      border: none;
+      color: #ff6b6b;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .delete:hover {
+      color: red;
+    }
+
+    /* Pomodoro Timer */
+    #pomodoro {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      width: 140px;
+      height: 140px;
+      background-color: #f9a826;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #1f3b57;
+      font-weight: bold;
+      font-size: 1.3rem;
+      cursor: grab;
+      user-select: none;
+      z-index: 999;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    #pomodoro button {
+      background: #1f3b57;
+      color: #f9a826;
+      border: none;
+      padding: 5px 10px;
+      margin-top: 8px;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #pomodoro button:hover {
+      background-color: #000f1d;
+    }
+    
+    .learning-journey {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: #1f3b57;
+  color: #f0f0f0;
+  border-radius: 12px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.learning-journey h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #ffd700;
+}
+
+details {
+  background: #2b4b6f;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #444;
+}
+
+summary {
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+ul {
+  padding-left: 1.2rem;
+}
+
+blockquote {
+  background: #304c72;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid #ffc107;
+  margin-top: 0.5rem;
+}
+
+  </style>
+</head>
+<body>
+      <a href="/index.html" id="home-btn" title="Back to Portfolio">
+        <i class="fas fa-home"></i>
+    </a>
+
+
+
+  <h1>Planner</h1>
+
+  <div class="input-section">
+    <select id="day-select">
+      <option value="" disabled selected>Select a day</option>
+      <option>Monday</option>
+      <option>Tuesday</option>
+      <option>Wednesday</option>
+      <option>Thursday</option>
+      <option>Friday</option>
+      <option>Saturday</option>
+      <option>Sunday</option>
+    </select>
+    <input type="text" id="task-input" placeholder="Enter your task..." />
+    <button id="add-task">Add</button>
+  </div>
+
+  <div class="tasks-container" id="tasks-container">
+    <!-- Tasks organized by day will appear here -->
+  </div>
+
+  <div id="pomodoro">
+    <div id="pomodoro-time">25:00</div>
+    <button id="start-stop">Start</button>
+    <button id="reset">Reset</button>
+  </div>
+
+  <script>
+    const tasksByDay = JSON.parse(localStorage.getItem('plannerTasks')) || {};
+    const tasksContainer = document.getElementById('tasks-container');
+    const daySelect = document.getElementById('day-select');
+    const taskInput = document.getElementById('task-input');
+    const addTaskBtn = document.getElementById('add-task');
+
+    function renderTasks() {
+      tasksContainer.innerHTML = '';
+      Object.keys(tasksByDay).forEach(day => {
+        const section = document.createElement('div');
+        section.className = 'day-section';
+        section.innerHTML = `<h2>${day}</h2><ul id="${day}-ul"></ul>`;
+        const ul = section.querySelector('ul');
+
+        tasksByDay[day].forEach(task => {
+          const li = document.createElement('li');
+          li.innerHTML = `<span>${task}</span><button class="delete">&times;</button>`;
+          li.querySelector('button').addEventListener('click', () => {
+            tasksByDay[day] = tasksByDay[day].filter(t => t !== task);
+            saveTasks();
+            renderTasks();
+          });
+          ul.appendChild(li);
+        });
+
+        tasksContainer.appendChild(section);
+      });
+    }
+
+    function saveTasks() {
+      localStorage.setItem('plannerTasks', JSON.stringify(tasksByDay));
+    }
+
+    addTaskBtn.addEventListener('click', () => {
+      const day = daySelect.value;
+      const task = taskInput.value.trim();
+      if (!day || task === '') return;
+
+      if (!tasksByDay[day]) tasksByDay[day] = [];
+      tasksByDay[day].push(task);
+      saveTasks();
+      renderTasks();
+      taskInput.value = '';
+    });
+
+// Pomodoro Timer
+let pomodoroTime = 25 * 60;
+let running = false;
+let interval;
+
+const timeDisplay = document.getElementById('pomodoro-time');
+const startStopBtn = document.getElementById('start-stop');
+const resetBtn = document.getElementById('reset');
+
+function updateTime() {
+  const mins = Math.floor(pomodoroTime / 60);
+  const secs = pomodoroTime % 60;
+  timeDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+function togglePomodoro() {
+  if (!running) {
+    interval = setInterval(() => {
+      if (pomodoroTime > 0) {
+        pomodoroTime--;
+        updateTime();
+      } else {
+        clearInterval(interval);
+        startStopBtn.textContent = 'Start';
+        running = false;
+        alert('Pomodoro complete! Take a break.');
+      }
+    }, 1000);
+    startStopBtn.textContent = 'Pause';
+    running = true;
+  } else {
+    clearInterval(interval);
+    startStopBtn.textContent = 'Start';
+    running = false;
+  }
+}
+
+function resetPomodoro() {
+  clearInterval(interval);
+  pomodoroTime = 25 * 60;
+  updateTime();
+  startStopBtn.textContent = 'Start';
+  running = false;
+}
+
+startStopBtn.addEventListener('click', togglePomodoro);
+resetBtn.addEventListener('click', resetPomodoro);
+updateTime();
+
+// Make Pomodoro draggable within window bounds
+const pomodoro = document.getElementById('pomodoro');
+let offsetX, offsetY, dragging = false;
+
+pomodoro.addEventListener('mousedown', (e) => {
+  dragging = true;
+  offsetX = e.clientX - pomodoro.offsetLeft;
+  offsetY = e.clientY - pomodoro.offsetTop;
+  pomodoro.style.cursor = 'grabbing';
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (dragging) {
+    let newX = e.clientX - offsetX;
+    let newY = e.clientY - offsetY;
+
+    // Clamp to window boundaries
+    const maxX = window.innerWidth - pomodoro.offsetWidth;
+    const maxY = window.innerHeight - pomodoro.offsetHeight;
+
+    newX = Math.max(0, Math.min(newX, maxX));
+    newY = Math.max(0, Math.min(newY, maxY));
+
+    pomodoro.style.left = `${newX}px`;
+    pomodoro.style.top = `${newY}px`;
+    pomodoro.style.position = 'fixed';
+  }
+});
+
+document.addEventListener('mouseup', () => {
+  dragging = false;
+  pomodoro.style.cursor = 'grab';
+});
+
+
+    
+
