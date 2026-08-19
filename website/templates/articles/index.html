@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Articles — Cory Wagaman-Eure{% endblock %}
+{% block description %}Articles by Cory Wagaman-Eure.{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/articles.css') }}">
+{% endblock %}
+
+{% block body_class %}articles-page{% endblock %}
+
+{% block body %}
+  <main class="page-shell">
+    <header class="page-header">
+      <a class="crumb" href="{{ url_for('site.home') }}">← Home</a>
+      <h1>Articles</h1>
+      <p>Long-form notes and ideas.</p>
+    </header>
+
+    <section class="page-section" aria-labelledby="article-list-heading">
+      <h2 class="visually-hidden" id="article-list-heading">All articles</h2>
+      {% if articles %}
+        <div class="article-grid">
+          {% for article in articles %}
+            <article class="entry">
+              <h3>
+                <a class="project-link" href="{{ url_for('site.article_detail', slug=article.slug) }}">{{ article.title }}</a>
+              </h3>
+              {% if article.published or article.tags %}
+                <div class="article-meta">
+                  {% if article.published %}<time datetime="{{ article.published }}">{{ article.display_date }}</time>{% endif %}
+                  {% for tag in article.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+                </div>
+              {% endif %}
+              {% if article.summary %}<p>{{ article.summary }}</p>{% endif %}
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state entry">
+          <h2>No articles yet</h2>
+          <p>New writing will appear here.</p>
+        </div>
+      {% endif %}
+    </section>
+  </main>
+{% endblock %}

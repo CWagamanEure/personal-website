@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} — Cory Wagaman-Eure{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/blog.css') }}">
+{% endblock %}
+
+{% block head_scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" defer></script>
+{% endblock %}
+
+{% block body_class %}blog-post-page{% endblock %}
+
+{% block body %}
+  <main class="page-shell narrow-shell">
+    <header class="page-header align-left">
+      <a class="crumb" href="{{ url_for('site.blog_index') }}">← Back to Blog</a>
+      <h1>{{ title }}</h1>
+      {% if post %}
+        <p><time datetime="{{ post.date }}">{{ post.display_date }}</time> · {{ post.tag_label }}</p>
+      {% endif %}
+    </header>
+
+    <article class="entry prose" id="post-content">
+      {{ body_html | safe }}
+    </article>
+  </main>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/blog-post.js') }}" defer></script>
+{% endblock %}
