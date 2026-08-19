@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Cory Wagaman-Eure's personal website.">
+    <title>Study Planner — Cory Wagaman-Eure</title>
+    <link rel="icon" href="/static/images/website-logo.png" type="image/png">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+
+  <link rel="stylesheet" href="/static/css/pages/planner.css">
+
+
+  </head>
+  <body class="planner-page">
+
+  <a class="home-button" href="/" title="Back to portfolio" aria-label="Back to portfolio">⌂</a>
+
+  <main class="planner-shell">
+    <h1>Planner</h1>
+
+    <form class="task-form" id="task-form">
+      <label class="visually-hidden" for="day-select">Day</label>
+      <select id="day-select" required>
+        <option value="" disabled selected>Select a day</option>
+        <option>Monday</option>
+        <option>Tuesday</option>
+        <option>Wednesday</option>
+        <option>Thursday</option>
+        <option>Friday</option>
+        <option>Saturday</option>
+        <option>Sunday</option>
+      </select>
+      <label class="visually-hidden" for="task-input">Task</label>
+      <input type="text" id="task-input" placeholder="Enter your task…" autocomplete="off" required>
+      <button type="submit">Add</button>
+    </form>
+
+    <div class="tasks-container" id="tasks-container" aria-live="polite"></div>
+  </main>
+
+  <aside class="pomodoro" id="pomodoro" aria-label="Pomodoro timer">
+    <div id="pomodoro-time" aria-live="polite">25:00</div>
+    <div class="pomodoro-actions">
+      <button id="start-stop" type="button">Start</button>
+      <button id="reset" type="button">Reset</button>
+    </div>
+  </aside>
+
+
+  <script src="/static/js/planner.js" defer></script>
+
+  </body>
+</html>

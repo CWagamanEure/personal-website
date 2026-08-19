@@ -31,6 +31,16 @@ python app.py
 
 Open <http://127.0.0.1:5000>. Port `5000` deliberately keeps this site separate from other local apps using `localhost:8000`.
 
+## Build for hosting
+
+UMW's cPanel web root serves static files, so the Flask application is exported before deployment:
+
+```bash
+python build_static.py
+```
+
+The generated `dist` directory contains the complete deployable website. Run the build again after changing templates, styles, scripts, or articles.
+
 ## Adding an article
 
 Create a Markdown file in `website/content/articles`. The filename becomes the URL slug, so `my-first-article.md` appears at `/articles/my-first-article/`.
@@ -60,10 +70,4 @@ RESEARCH_ENABLED=true python app.py
 
 ## cPanel
 
-The repository includes `passenger_wsgi.py` for cPanel's Passenger application server. In **Setup Python App**, use:
-
-- Application root: `/home/corywaga/public_html`
-- Startup file: `passenger_wsgi.py`
-- Entry point: `application`
-
-Install `requirements.txt` in the application environment, then deploy the Git repository and restart the application.
+The `.cpanel.yml` deployment copies the generated `dist` directory into `/home/corywaga/public_html`. In cPanel Git Version Control, use **Update from Remote** and then **Deploy HEAD Commit**.

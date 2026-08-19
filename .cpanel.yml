@@ -2,8 +2,6 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/corywaga/public_html/
-    - /bin/rm -f /home/corywaga/public_html/index.html /home/corywaga/public_html/style.css /home/corywaga/public_html/study-planner.html /home/corywaga/public_html/cursor.png /home/corywaga/public_html/websiteLogo1.png
-    - /bin/rm -rf /home/corywaga/public_html/blog /home/corywaga/public_html/market\ microstructure /home/corywaga/public_html/papers
-    - /bin/cp -R ./app.py ./passenger_wsgi.py ./requirements.txt ./website $DEPLOYPATH
-    - /bin/mkdir -p /home/corywaga/public_html/tmp
-    - /usr/bin/touch /home/corywaga/public_html/tmp/restart.txt
+    - /bin/rm -f /home/corywaga/public_html/app.py /home/corywaga/public_html/passenger_wsgi.py /home/corywaga/public_html/requirements.txt /home/corywaga/public_html/index.html /home/corywaga/public_html/study-planner.html /home/corywaga/public_html/404.html
+    - /bin/rm -rf /home/corywaga/public_html/website /home/corywaga/public_html/tmp /home/corywaga/public_html/static /home/corywaga/public_html/articles
+    - /bin/cp -R ./dist/. $DEPLOYPATH

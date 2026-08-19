@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Cory Wagaman-Eure's personal website.">
+    <title>Cory Wagaman-Eure</title>
+    <link rel="icon" href="/static/images/website-logo.png" type="image/png">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+
+  <link rel="stylesheet" href="/static/css/pages/home.css">
+
+
+  </head>
+  <body class="home-page">
+
+  <main class="site-main">
+    <section class="hero" aria-labelledby="site-title">
+      <h1 class="visually-hidden" id="site-title">Cory Wagaman-Eure</h1>
+      <img
+        class="logo-img"
+        src="/static/images/website-logo.png"
+        alt="Cory Wagaman-Eure"
+      >
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#about">about</a>
+        <span aria-hidden="true">|</span>
+        <a href="/articles/">articles</a>
+        <span aria-hidden="true">|</span>
+        <a href="#experience">experience</a>
+        <span aria-hidden="true">|</span>
+        <a href="https://github.com/CWagamanEure" target="_blank" rel="noopener">github</a>
+
+      </nav>
+    </section>
+
+    <section class="content-section" id="about">
+      <h2>about</h2>
+      <p>
+        Hi! I'm Cory Wagaman-Eure, a student at the University of Mary Washington studying computer science and math. I'm deeply interested in crypto markets and DeFi trading. I'm currently working at galaxy as a blockchain engineer intern.
+      </p>
+    </section>
+
+    <section class="content-section" id="experience">
+      <h2>experience</h2>
+      <ul class="experience-list">
+        <li>
+          <span>blockchain engineer intern @ galaxy</span>
+          <span class="experience-date">jun 2026 – present</span>
+        </li>
+        <li>
+          <span>swe intern @ lockchain</span>
+          <span class="experience-date">jan 2026 – jun 2026</span>
+        </li>
+      </ul>
+    </section>
+
+
+
+    <footer class="site-footer">
+      <nav class="contact-icons" aria-label="Contact links">
+        <a href="mailto:cwagaman@umw.edu" aria-label="Email">
+          <img class="social-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg" alt="">
+        </a>
+        <a href="https://github.com/CWagamanEure" target="_blank" rel="noopener" aria-label="GitHub">
+          <img class="social-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="">
+        </a>
+        <a href="https://www.linkedin.com/in/corywagamaneure/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <img class="social-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="">
+        </a>
+      </nav>
+      <p class="btc-footer">
+        BTC price at website creation: $105,437<br>
+        BTC price now: <span id="btc-price">Loading…</span>
+      </p>
+    </footer>
+  </main>
+
+
+  <script src="/static/js/home.js" defer></script>
+
+  </body>
+</html>

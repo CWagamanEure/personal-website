@@ -1,5 +1,8 @@
 import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
+from build_static import build
 from website import create_app
 
 
@@ -93,6 +96,23 @@ class SiteRoutesTestCase(unittest.TestCase):
         response = self.client.get("/definitely-not-a-page")
         self.assertEqual(response.status_code, 404)
         self.assertIn(b"Page not found", response.data)
+
+    def test_static_site_build(self):
+        with TemporaryDirectory() as directory:
+            output_directory = Path(directory)
+            build(output_directory)
+
+            expected_files = (
+                output_directory / "index.html",
+                output_directory / "articles" / "index.html",
+                output_directory / "study-planner.html",
+                output_directory / "404.html",
+                output_directory / ".htaccess",
+                output_directory / "static" / "css" / "base.css",
+            )
+            for path in expected_files:
+                with self.subTest(path=path):
+                    self.assertTrue(path.is_file())
 
 
 if __name__ == "__main__":
