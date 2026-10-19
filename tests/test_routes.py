@@ -1,17 +1,22 @@
+import shutil
+import subprocess
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from build_static import build
+from flask import render_template
+
 from website import create_app
+from website.articles import Article, load_articles
 
 
 class SiteRoutesTestCase(unittest.TestCase):
     def setUp(self):
         app = create_app({"TESTING": True})
         self.client = app.test_client()
-        research_app = create_app({"TESTING": True, "RESEARCH_ENABLED": True})
-        self.research_client = research_app.test_client()
+        archived_app = create_app({"TESTING": True, "RESEARCH_ENABLED": False})
+        self.archived_client = archived_app.test_client()
 
     def test_main_pages_render(self):
         routes = (
@@ -30,10 +35,9 @@ class SiteRoutesTestCase(unittest.TestCase):
         self.assertIn(b'href="https://github.com/CWagamanEure"', response.data)
         self.assertIn(b">github</a>", response.data)
 
-    def test_articles_start_fresh(self):
+    def test_articles_exclude_the_old_blog(self):
         response = self.client.get("/articles/")
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b"No articles yet", response.data)
         self.assertNotIn(b"Moment Generating", response.data)
         self.assertNotIn(b"Prediction Markets", response.data)
 
@@ -41,6 +45,46 @@ class SiteRoutesTestCase(unittest.TestCase):
         response = self.client.get("/")
         self.assertIn(b'href="/articles/"', response.data)
         self.assertIn(b">articles</a>", response.data)
+
+    def test_article_with_a_demo_loads_its_scripts(self):
+        index = self.client.get("/articles/")
+        self.assertIn(b'href="/articles/mle-gaussian/"', index.data)
+
+        detail = self.client.get("/articles/mle-gaussian/")
+        self.assertEqual(detail.status_code, 200)
+        self.assertIn(b'data-demo="mle-gaussian"', detail.data)
+        self.assertIn(b"js/demos/harness.js", detail.data)
+        self.assertIn(b"js/demos/mle-gaussian.js", detail.data)
+        self.assertIn(b"css/pages/demos.css", detail.data)
+
+    def test_every_declared_demo_ships_its_script(self):
+        for article in load_articles():
+            for demo in article.demos:
+                with self.subTest(article=article.slug, demo=demo):
+                    script = Path("website/static/js/demos") / f"{demo}.js"
+                    self.assertTrue(script.is_file())
+
+    def test_demos_are_detected_from_the_markdown(self):
+        article = next(a for a in load_articles() if a.slug == "mle-gaussian")
+        self.assertEqual(article.demos, ("mle-gaussian",))
+
+    def test_article_without_a_demo_stays_lean(self):
+        plain = Article(
+            slug="plain",
+            title="Plain",
+            published="2026-01-01",
+            summary="",
+            tags=(),
+            demos=(),
+            html="<p>No demo here.</p>",
+        )
+
+        app = create_app({"TESTING": True})
+        with app.test_request_context():
+            rendered = render_template("articles/detail.html", article=plain)
+
+        self.assertNotIn("js/demos/", rendered)
+        self.assertNotIn("css/pages/demos.css", rendered)
 
     def test_old_blog_routes_are_archived(self):
         routes = (
@@ -78,19 +122,26 @@ class SiteRoutesTestCase(unittest.TestCase):
             with self.subTest(route=route):
                 self.assertEqual(self.client.get(route).status_code, 404)
 
-    def test_research_is_archived_by_default(self):
-        self.assertEqual(self.client.get("/papers/when_does_lvr_outrun_fees.pdf").status_code, 404)
-        self.assertEqual(self.client.get("/static/papers/when_does_lvr_outrun_fees.pdf").status_code, 404)
-        self.assertNotIn(b'href="#research"', self.client.get("/").data)
-
-    def test_research_can_be_restored_with_feature_flag(self):
-        response = self.research_client.get("/papers/when_does_lvr_outrun_fees.pdf")
+    def test_research_is_published_by_default(self):
+        response = self.client.get("/papers/when_does_lvr_outrun_fees.pdf")
         try:
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.mimetype, "application/pdf")
-            self.assertIn(b'href="#research"', self.research_client.get("/").data)
+            self.assertIn(b'href="#research"', self.client.get("/").data)
         finally:
             response.close()
+
+    def test_research_can_be_archived_with_feature_flag(self):
+        self.assertEqual(self.archived_client.get("/papers/when_does_lvr_outrun_fees.pdf").status_code, 404)
+        self.assertEqual(self.archived_client.get("/static/papers/when_does_lvr_outrun_fees.pdf").status_code, 404)
+        self.assertNotIn(b'href="#research"', self.archived_client.get("/").data)
+
+    def test_homepage_showcases_incerto_and_articles(self):
+        response = self.client.get("/")
+        self.assertIn(b'href="https://terminal.incerto.app"', response.data)
+        self.assertIn(b'href="/articles/mle-gaussian/"', response.data)
+        self.assertIn(b"interactive demo", response.data)
+        self.assertNotIn(b'class="logo-img"', response.data)
 
     def test_unknown_page_uses_custom_404(self):
         response = self.client.get("/definitely-not-a-page")
@@ -105,6 +156,8 @@ class SiteRoutesTestCase(unittest.TestCase):
             expected_files = (
                 output_directory / "index.html",
                 output_directory / "articles" / "index.html",
+                output_directory / "articles" / "mle-gaussian" / "index.html",
+                output_directory / "static" / "js" / "demos" / "harness.js",
                 output_directory / "study-planner.html",
                 output_directory / "404.html",
                 output_directory / ".htaccess",
@@ -113,6 +166,19 @@ class SiteRoutesTestCase(unittest.TestCase):
             for path in expected_files:
                 with self.subTest(path=path):
                     self.assertTrue(path.is_file())
+
+
+class DistributionFittingTestCase(unittest.TestCase):
+    """The fitting maths lives in JavaScript, so its checks run under node."""
+
+    @unittest.skipUnless(shutil.which("node"), "node is not installed")
+    def test_fits_and_information_criteria(self):
+        result = subprocess.run(
+            ["node", str(Path(__file__).parent / "test_stats.js")],
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
 if __name__ == "__main__":

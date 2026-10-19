@@ -6,6 +6,9 @@
 {% block styles %}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/articles.css') }}">
+  {% if article.demos %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/demos.css') }}">
+  {% endif %}
 {% endblock %}
 
 {% block head_scripts %}
@@ -36,4 +39,11 @@
 
 {% block scripts %}
   <script src="{{ url_for('static', filename='js/article.js') }}" defer></script>
+  {% if article.demos %}
+    <script src="{{ url_for('static', filename='js/demos/harness.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/demos/stats.js') }}" defer></script>
+    {% for demo in article.demos %}
+      <script src="{{ url_for('static', filename='js/demos/' ~ demo ~ '.js') }}" defer></script>
+    {% endfor %}
+  {% endif %}
 {% endblock %}

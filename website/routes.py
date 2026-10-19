@@ -11,7 +11,7 @@ PAPER_DIRECTORY = Path(__file__).parent / "content" / "papers"
 
 @site.get("/")
 def home():
-    return render_template("home.html")
+    return render_template("home.html", articles=load_articles())
 
 
 @site.get("/index.html")

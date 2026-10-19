@@ -1,3 +1,4 @@
+import re
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
@@ -6,6 +7,7 @@ from markdown import Markdown
 
 
 ARTICLE_DIRECTORY = Path(__file__).parent / "content" / "articles"
+DEMO_PATTERN = re.compile(r'data-demo="([\w-]+)"')
 
 
 @dataclass(frozen=True)
@@ -15,6 +17,7 @@ class Article:
     published: str
     summary: str
     tags: tuple[str, ...]
+    demos: tuple[str, ...]
     html: str
 
     @property
@@ -51,8 +54,14 @@ def _load_article(path):
             for tag in _metadata_value(metadata, "tags").split(",")
             if tag.strip()
         ),
+        demos=_demo_names(html),
         html=html,
     )
+
+
+def _demo_names(html):
+    """Names of the demo modules an article mounts, in first-appearance order."""
+    return tuple(dict.fromkeys(DEMO_PATTERN.findall(html)))
 
 
 def _metadata_value(metadata, key):

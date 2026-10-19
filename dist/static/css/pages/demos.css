@@ -1,0 +1,193 @@
+.demo-figure {
+  /* Demos read better edge-to-edge than the surrounding prose column. */
+  margin: 2rem calc(-1 * clamp(0.4rem, 2vw, 1rem));
+  padding: 1rem;
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.demo-canvas {
+  display: block;
+  width: 100%;
+}
+
+.demo-controls {
+  display: grid;
+  gap: 0.6rem 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  align-items: end;
+  margin-top: 1rem;
+}
+
+.demo-field {
+  display: grid;
+  grid-template-areas:
+    "name value"
+    "slider slider";
+  grid-template-columns: 1fr auto;
+  gap: 0.15rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+/* display:grid on .demo-field would otherwise beat the UA rule for [hidden]. */
+.demo-field[hidden] {
+  display: none;
+}
+
+.demo-field-name {
+  grid-area: name;
+  color: var(--color-text-muted);
+}
+
+.demo-field-value {
+  grid-area: value;
+  color: var(--color-accent);
+}
+
+.demo-field input[type="range"] {
+  grid-area: slider;
+  width: 100%;
+  height: 2px;
+  margin: 0.35rem 0 0;
+  appearance: none;
+  background: var(--color-border);
+  border-radius: 999px;
+}
+
+.demo-field input[type="range"]::-webkit-slider-thumb {
+  width: 13px;
+  height: 13px;
+  appearance: none;
+  background: var(--color-accent);
+  border: 0;
+  border-radius: 50%;
+}
+
+.demo-field input[type="range"]::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  background: var(--color-accent);
+  border: 0;
+  border-radius: 50%;
+}
+
+.demo-actions {
+  display: flex;
+  align-items: end;
+}
+
+.demo-button {
+  padding: 0.35rem 0.8rem;
+  color: var(--color-accent);
+  font-size: 0.8rem;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: background-color 160ms ease;
+}
+
+.demo-button:hover {
+  background: var(--color-surface-muted);
+}
+
+.demo-notice {
+  margin: 1rem 0 0;
+  padding-top: 0.9rem;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  border-top: 1px solid var(--color-border);
+}
+
+.demo-missing {
+  padding: 1rem;
+  color: var(--color-danger);
+  font-size: 0.85rem;
+  border: 1px dashed var(--color-danger);
+  border-radius: var(--radius-md);
+}
+
+.demo-field-choice {
+  grid-column: 1 / -1;
+  grid-template-areas:
+    "name name"
+    "select select";
+}
+
+.demo-select {
+  grid-area: select;
+  width: 100%;
+  padding: 0.3rem 0.4rem;
+  margin-top: 0.2rem;
+  color: var(--color-accent);
+  font-size: 0.8rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.demo-stats {
+  margin-top: 1.1rem;
+}
+
+.demo-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.5rem;
+  margin: 0 0 0.9rem;
+  font-size: 0.78rem;
+}
+
+.demo-strip dt {
+  color: var(--color-text-muted);
+}
+
+.demo-strip dd {
+  margin: 0 0 0 0.4rem;
+  color: var(--color-accent);
+}
+
+.demo-table {
+  width: 100%;
+  font-size: 0.76rem;
+  border-collapse: collapse;
+}
+
+.demo-table th {
+  padding: 0.3rem 0.5rem;
+  color: var(--color-text-muted);
+  font-weight: normal;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.demo-table td {
+  padding: 0.3rem 0.5rem;
+  border-bottom: 1px solid rgb(58 90 120 / 40%);
+}
+
+.demo-table th:not(:first-child),
+.demo-table td:not(:first-child):not(:nth-child(2)) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.demo-table tr.is-best td {
+  color: var(--color-accent);
+  background: rgb(100 255 218 / 8%);
+}
+
+.demo-table-caption {
+  margin: 0.7rem 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 560px) {
+  .demo-table td:nth-child(2),
+  .demo-table th:nth-child(2) {
+    display: none;
+  }
+}

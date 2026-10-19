@@ -16,34 +16,107 @@
   <body class="home-page">
 
   <main class="site-main">
-    <section class="hero" aria-labelledby="site-title">
-      <h1 class="visually-hidden" id="site-title">Cory Wagaman-Eure</h1>
-      <img
-        class="logo-img"
-        src="/static/images/website-logo.png"
-        alt="Cory Wagaman-Eure"
-      >
+    <header class="site-header">
+      <h1 id="site-title">Cory Wagaman-Eure</h1>
       <nav class="nav-links" aria-label="Primary navigation">
         <a href="#about">about</a>
         <span aria-hidden="true">|</span>
+        <a href="#incerto">incerto</a>
+
+          <span aria-hidden="true">|</span>
+          <a href="#research">research</a>
+
+        <span aria-hidden="true">|</span>
         <a href="/articles/">articles</a>
         <span aria-hidden="true">|</span>
-        <a href="#experience">experience</a>
+        <a href="#experience">experiences</a>
         <span aria-hidden="true">|</span>
         <a href="https://github.com/CWagamanEure" target="_blank" rel="noopener">github</a>
-
       </nav>
-    </section>
+    </header>
 
-    <section class="content-section" id="about">
+    <section class="content-section about" id="about">
       <h2>about</h2>
       <p>
-        Hi! I'm Cory Wagaman-Eure, a student at the University of Mary Washington studying computer science and math. I'm deeply interested in crypto markets and DeFi trading. I'm currently working at galaxy as a blockchain engineer intern.
+        Hi! I'm Cory, a student at the University of Mary Washington studying computer science and math. I'm currently a <a href="#experience">blockchain engineer intern at Galaxy</a>.
+      </p>
+      <p>
+        I'm interested in crypto market microstructure. I built <a href="#incerto">Incerto</a>, a research terminal for crypto data, wrote <a href="#research">empirical papers</a> on DEX pricing, LVR, and stablecoin ownership,
+        and publish <a href="/articles/">articles with interactive demos</a> on the statistics underneath.
       </p>
     </section>
 
+    <section class="content-section" id="incerto">
+      <h2>incerto</h2>
+      <div class="incerto">
+        <a class="incerto-shot" href="https://terminal.incerto.app" target="_blank" rel="noopener">
+          <img
+            src="/static/images/incerto.jpg"
+            alt="Incerto terminal showing a BTC/USD chart with the console open"
+            width="880"
+            height="550"
+          >
+        </a>
+        <div class="incerto-copy">
+          <strong>A Bloomberg-style research terminal for crypto markets.</strong>
+          <p>
+            Typed market entities, an immutable raw-data store, a paper-trading engine with regime snapshots, and a keyboard-first console.
+            Try <code>BTC</code>, <code>zoom</code>, or <code>help</code> once it loads.
+          </p>
+          <a class="project-link" href="https://terminal.incerto.app" target="_blank" rel="noopener">[terminal.incerto.app]</a>
+        </div>
+      </div>
+    </section>
+
+
+      <section class="content-section" id="research">
+        <h2>research</h2>
+        <ul class="research-list">
+          <li>
+            <strong>Is Retail Dead?</strong>
+            <p>Research paper written in collaboration with Vessel.xyz examining stablecoin ownership concentration across Ethereum and Solana.</p>
+            <a class="project-link" href="https://drive.google.com/file/d/1M4B6DnBV4_DXoghEuy4qyMQ-8J6KLdZ0/view" target="_blank" rel="noopener">[Paper]</a>
+          </li>
+          <li>
+            <strong>Ethereum Congestion and the Mean Reversion of DEX-CEX Price Spreads</strong>
+            <p>Empirical research on whether Ethereum congestion slows the correction of DEX-CEX mispricing, showing that higher gas weakens price alignment when arbitrage is actively operating.</p>
+            <a class="project-link" href="/papers/ethereum-congestion-mean-reversion.pdf" target="_blank" rel="noopener">[Paper]</a>
+          </li>
+          <li>
+            <strong>When does LVR Outrun Fees?</strong>
+            <p>A brief empirical note on AMM liquidity provision, LVR, and toxic flow. Fee income rises in more toxic regimes, but LVR rises faster.</p>
+            <a class="project-link" href="/papers/when_does_lvr_outrun_fees.pdf" target="_blank" rel="noopener">[Paper]</a>
+          </li>
+          <li>
+            <strong>The Signal and the Noise Reflection</strong>
+            <p>Some thoughts on the ways institutions incentivize inaccurate forecasting, embedded in a reflection on Nate Silver's <em>The Signal and the Noise</em>.</p>
+            <a class="project-link" href="/papers/signal_noise_reflection.pdf" target="_blank" rel="noopener">[Paper]</a>
+          </li>
+        </ul>
+      </section>
+
+
+
+      <section class="content-section" id="articles">
+        <h2>articles</h2>
+        <ul class="article-list">
+
+            <li>
+              <span>
+                <a href="/articles/mle-gaussian/">Maximum Likelihood Estimation</a>
+                <span class="article-flag">interactive demo</span>
+              </span>
+
+                <time class="experience-date" datetime="2026-08-19">august 19, 2026</time>
+
+            </li>
+
+        </ul>
+      </section>
+
+
     <section class="content-section" id="experience">
-      <h2>experience</h2>
+      <h2>experiences</h2>
       <ul class="experience-list">
         <li>
           <span>blockchain engineer intern @ galaxy</span>
@@ -56,19 +129,11 @@
       </ul>
     </section>
 
-
-
     <footer class="site-footer">
-      <nav class="contact-icons" aria-label="Contact links">
-        <a href="mailto:cwagaman@umw.edu" aria-label="Email">
-          <img class="social-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg" alt="">
-        </a>
-        <a href="https://github.com/CWagamanEure" target="_blank" rel="noopener" aria-label="GitHub">
-          <img class="social-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="">
-        </a>
-        <a href="https://www.linkedin.com/in/corywagamaneure/" target="_blank" rel="noopener" aria-label="LinkedIn">
-          <img class="social-icon" src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="">
-        </a>
+      <nav class="contact-links" aria-label="Contact links">
+        <a href="mailto:cwagaman@umw.edu">email</a>
+        <a href="https://github.com/CWagamanEure" target="_blank" rel="noopener">github</a>
+        <a href="https://www.linkedin.com/in/corywagamaneure/" target="_blank" rel="noopener">linkedin</a>
       </nav>
       <p class="btc-footer">
         BTC price at website creation: $105,437<br>

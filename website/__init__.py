@@ -6,7 +6,7 @@ from flask import Flask
 def create_app(test_config=None):
     app = Flask(__name__)
     app.config.from_mapping(
-        RESEARCH_ENABLED=_environment_flag("RESEARCH_ENABLED"),
+        RESEARCH_ENABLED=_environment_flag("RESEARCH_ENABLED", default=True),
     )
 
     if test_config:
@@ -18,5 +18,8 @@ def create_app(test_config=None):
     return app
 
 
-def _environment_flag(name):
-    return os.getenv(name, "").strip().lower() in {"1", "true", "yes", "on"}
+def _environment_flag(name, default=False):
+    value = os.getenv(name, "").strip().lower()
+    if not value:
+        return default
+    return value in {"1", "true", "yes", "on"}

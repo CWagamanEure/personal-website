@@ -141,7 +141,7 @@
   max-width: 100%;
   padding: 1rem;
   overflow: auto;
-  background: #091629;
+  background: var(--color-bg);
   border-radius: var(--radius-md);
 }
 

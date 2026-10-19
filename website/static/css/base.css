@@ -1,14 +1,14 @@
 :root {
   color-scheme: dark;
-  --color-bg: #1f3b57;
-  --color-surface: #0a192f;
-  --color-surface-soft: #10233b;
-  --color-surface-muted: #2d4a68;
-  --color-text: #ccd6f6;
-  --color-text-muted: #b8c7e0;
-  --color-accent: #64ffda;
-  --color-accent-soft: #a7ffeb;
-  --color-border: #3a5a78;
+  --color-bg: #0b1220;
+  --color-surface: #121b2e;
+  --color-surface-soft: #16213a;
+  --color-surface-muted: #1f2c48;
+  --color-text: #d8dde8;
+  --color-text-muted: #8d99b0;
+  --color-accent: #f0b35b;
+  --color-accent-soft: #ffd58f;
+  --color-border: #243150;
   --color-danger: #ff7b7b;
   --color-warning: #f9a826;
   --font-body: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
@@ -81,7 +81,7 @@ a {
 
 ::selection {
   background: var(--color-accent);
-  color: var(--color-surface);
+  color: var(--color-bg);
 }
 
 ::-webkit-scrollbar {
@@ -89,7 +89,7 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #081522;
+  background: var(--color-surface-muted);
   border-radius: 999px;
 }
 
