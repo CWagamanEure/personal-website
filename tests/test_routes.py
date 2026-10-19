@@ -8,7 +8,7 @@ from build_static import build
 from flask import render_template
 
 from website import create_app
-from website.articles import Article, load_articles
+from website.articles import Article, get_article, load_articles
 
 
 class SiteRoutesTestCase(unittest.TestCase):
@@ -41,31 +41,41 @@ class SiteRoutesTestCase(unittest.TestCase):
         self.assertNotIn(b"Moment Generating", response.data)
         self.assertNotIn(b"Prediction Markets", response.data)
 
-    def test_homepage_links_to_articles(self):
+    def test_homepage_hides_articles_until_one_is_published(self):
         response = self.client.get("/")
-        self.assertIn(b'href="/articles/"', response.data)
-        self.assertIn(b">articles</a>", response.data)
+        if load_articles():
+            self.assertIn(b'href="/articles/"', response.data)
+        else:
+            self.assertNotIn(b'href="/articles/"', response.data)
+
+    def test_drafts_are_not_published(self):
+        self.assertTrue(get_article("mle-gaussian", include_drafts=True).draft)
+        self.assertIsNone(get_article("mle-gaussian"))
+        self.assertEqual(self.client.get("/articles/mle-gaussian/").status_code, 404)
+        self.assertNotIn(b"mle-gaussian", self.client.get("/articles/").data)
+        self.assertNotIn(b"mle-gaussian", self.client.get("/").data)
 
     def test_article_with_a_demo_loads_its_scripts(self):
-        index = self.client.get("/articles/")
-        self.assertIn(b'href="/articles/mle-gaussian/"', index.data)
+        article = get_article("mle-gaussian", include_drafts=True)
 
-        detail = self.client.get("/articles/mle-gaussian/")
-        self.assertEqual(detail.status_code, 200)
-        self.assertIn(b'data-demo="mle-gaussian"', detail.data)
-        self.assertIn(b"js/demos/harness.js", detail.data)
-        self.assertIn(b"js/demos/mle-gaussian.js", detail.data)
-        self.assertIn(b"css/pages/demos.css", detail.data)
+        app = create_app({"TESTING": True})
+        with app.test_request_context():
+            rendered = render_template("articles/detail.html", article=article)
+
+        self.assertIn('data-demo="mle-gaussian"', rendered)
+        self.assertIn("js/demos/harness.js", rendered)
+        self.assertIn("js/demos/mle-gaussian.js", rendered)
+        self.assertIn("css/pages/demos.css", rendered)
 
     def test_every_declared_demo_ships_its_script(self):
-        for article in load_articles():
+        for article in load_articles(include_drafts=True):
             for demo in article.demos:
                 with self.subTest(article=article.slug, demo=demo):
                     script = Path("website/static/js/demos") / f"{demo}.js"
                     self.assertTrue(script.is_file())
 
     def test_demos_are_detected_from_the_markdown(self):
-        article = next(a for a in load_articles() if a.slug == "mle-gaussian")
+        article = get_article("mle-gaussian", include_drafts=True)
         self.assertEqual(article.demos, ("mle-gaussian",))
 
     def test_article_without_a_demo_stays_lean(self):
@@ -136,11 +146,9 @@ class SiteRoutesTestCase(unittest.TestCase):
         self.assertEqual(self.archived_client.get("/static/papers/when_does_lvr_outrun_fees.pdf").status_code, 404)
         self.assertNotIn(b'href="#research"', self.archived_client.get("/").data)
 
-    def test_homepage_showcases_incerto_and_articles(self):
+    def test_homepage_showcases_incerto(self):
         response = self.client.get("/")
         self.assertIn(b'href="https://terminal.incerto.app"', response.data)
-        self.assertIn(b'href="/articles/mle-gaussian/"', response.data)
-        self.assertIn(b"interactive demo", response.data)
         self.assertNotIn(b'class="logo-img"', response.data)
 
     def test_unknown_page_uses_custom_404(self):
@@ -156,7 +164,6 @@ class SiteRoutesTestCase(unittest.TestCase):
             expected_files = (
                 output_directory / "index.html",
                 output_directory / "articles" / "index.html",
-                output_directory / "articles" / "mle-gaussian" / "index.html",
                 output_directory / "static" / "js" / "demos" / "harness.js",
                 output_directory / "study-planner.html",
                 output_directory / "404.html",

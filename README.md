@@ -56,6 +56,8 @@ Write the article here using Markdown.
 ```
 
 Articles are discovered automatically; no metadata file or route change is required.
+Add `Draft: true` to the front matter to keep an article out of the site entirely
+(not listed, not routed, not built) while it is being worked on.
 
 ## Adding a demo to an article
 

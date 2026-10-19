@@ -2,6 +2,7 @@ Title: Maximum Likelihood Estimation
 Date: 2026-08-19
 Summary: Estimating a data generating distribution.  
 Tags: estimation, mle, probability
+Draft: true
 
 Suppose we are trying to estimate a data generating distribution given we have observed $x_1 \dots, x_n$. 
 

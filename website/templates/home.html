@@ -18,8 +18,10 @@
           <span aria-hidden="true">|</span>
           <a href="#research">research</a>
         {% endif %}
-        <span aria-hidden="true">|</span>
-        <a href="{{ url_for('site.articles_index') }}">articles</a>
+        {% if articles %}
+          <span aria-hidden="true">|</span>
+          <a href="{{ url_for('site.articles_index') }}">articles</a>
+        {% endif %}
         <span aria-hidden="true">|</span>
         <a href="#experience">experiences</a>
         <span aria-hidden="true">|</span>
@@ -30,12 +32,10 @@
     <section class="content-section about" id="about">
       <h2>about</h2>
       <p>
-        Hi! I'm Cory, a student at the University of Mary Washington studying computer science and math. I'm currently a <a href="#experience">blockchain engineer intern at Galaxy</a>.
+        I'm Cory, a student at the University of Mary Washington studying computer science and math. I'm interested in crypto markets and DeFi trading. Right now I'm a <a href="#experience">blockchain engineer intern at galaxy</a>.
       </p>
       <p>
-        I'm interested in crypto market microstructure. I built <a href="#incerto">Incerto</a>, a research terminal for crypto data,
-        {%- if config.RESEARCH_ENABLED %} wrote <a href="#research">empirical papers</a> on DEX pricing, LVR, and stablecoin ownership,{% endif %}
-        and publish <a href="{{ url_for('site.articles_index') }}">articles with interactive demos</a> on the statistics underneath.
+        Outside of that I've been building <a href="#incerto">incerto</a>, a research terminal for crypto markets{% if config.RESEARCH_ENABLED %}, and writing up some <a href="#research">research</a> on DEX pricing and LVR{% endif %}.
       </p>
     </section>
 
@@ -51,10 +51,8 @@
           >
         </a>
         <div class="incerto-copy">
-          <strong>A Bloomberg-style research terminal for crypto markets.</strong>
           <p>
-            Typed market entities, an immutable raw-data store, a paper-trading engine with regime snapshots, and a keyboard-first console.
-            Try <code>BTC</code>, <code>zoom</code>, or <code>help</code> once it loads.
+            A research terminal for crypto markets, built as a personal project. It pulls data from CoinGecko, Hyperliquid, and FRED, keeps the raw data around so results can be reproduced, and has a paper-trading engine and a daily BTC regime model on top. Still very much in progress.
           </p>
           <a class="project-link" href="https://terminal.incerto.app" target="_blank" rel="noopener">[terminal.incerto.app]</a>
         </div>
@@ -77,12 +75,12 @@
           </li>
           <li>
             <strong>When does LVR Outrun Fees?</strong>
-            <p>A brief empirical note on AMM liquidity provision, LVR, and toxic flow. Fee income rises in more toxic regimes, but LVR rises faster.</p>
+            <p>A brief research empirical note on AMM liquidity provision, LVR, and toxic flow. The core result is that fee income rises in more toxic regimes, but LVR rises faster.</p>
             <a class="project-link" href="{{ url_for('site.paper', filename='when_does_lvr_outrun_fees.pdf') }}" target="_blank" rel="noopener">[Paper]</a>
           </li>
           <li>
             <strong>The Signal and the Noise Reflection</strong>
-            <p>Some thoughts on the ways institutions incentivize inaccurate forecasting, embedded in a reflection on Nate Silver's <em>The Signal and the Noise</em>.</p>
+            <p>Some thoughts on the ways in which institutions incentivize inaccurate forecasting, embedded in a reflection of Nate Silver's <em>The Signal and the Noise</em>.</p>
             <a class="project-link" href="{{ url_for('site.paper', filename='signal_noise_reflection.pdf') }}" target="_blank" rel="noopener">[Paper]</a>
           </li>
         </ul>

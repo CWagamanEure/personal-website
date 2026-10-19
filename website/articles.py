@@ -19,6 +19,7 @@ class Article:
     tags: tuple[str, ...]
     demos: tuple[str, ...]
     html: str
+    draft: bool = False
 
     @property
     def display_date(self):
@@ -30,13 +31,19 @@ class Article:
             return self.published
 
 
-def load_articles():
+def load_articles(include_drafts=False):
+    """Published articles, newest first. Drafts stay out unless asked for."""
     articles = [_load_article(path) for path in ARTICLE_DIRECTORY.glob("*.md")]
+    if not include_drafts:
+        articles = [article for article in articles if not article.draft]
     return sorted(articles, key=lambda article: article.published, reverse=True)
 
 
-def get_article(slug):
-    return next((article for article in load_articles() if article.slug == slug), None)
+def get_article(slug, include_drafts=False):
+    return next(
+        (article for article in load_articles(include_drafts) if article.slug == slug),
+        None,
+    )
 
 
 def _load_article(path):
@@ -56,6 +63,7 @@ def _load_article(path):
         ),
         demos=_demo_names(html),
         html=html,
+        draft=_metadata_value(metadata, "draft").lower() in {"1", "true", "yes"},
     )
 
 
