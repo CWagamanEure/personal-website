@@ -93,6 +93,22 @@
   color: var(--color-accent-soft);
 }
 
+.incerto-commands {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.8rem;
+}
+
+.incerto-commands li {
+  margin-bottom: 0.35rem;
+  padding-left: 1rem;
+  text-indent: -1rem;
+}
+
+.incerto-commands code {
+  margin-right: 0.35rem;
+}
+
 .experience-list,
 .research-list,
 .article-list {

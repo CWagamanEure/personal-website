@@ -57,7 +57,19 @@
         </a>
         <div class="incerto-copy">
           <p>
-            A research terminal for crypto markets, built as a personal project. It pulls data from CoinGecko, Hyperliquid, and FRED, keeps the raw data around so results can be reproduced, and has a paper-trading engine and a daily BTC regime model on top. Still very much in progress.
+            A research terminal for crypto markets, built as a personal project. It works like a command line: type a coin to open its chart, or a command to switch screens.
+          </p>
+          <ul class="incerto-commands">
+            <li><code>markets</code> price chart for any coin, candles or line, with related assets, raw data, and derivatives tabs</li>
+            <li><code>macro</code> economic series from FRED</li>
+            <li><code>traders</code> a set of Hyperliquid wallets and the positions they hold</li>
+            <li><code>holdings</code> the biggest net positions by coin across those wallets</li>
+            <li><code>book</code> the paper-trading book: positions, activity, strategy runs</li>
+            <li><code>operations</code> status of the data jobs</li>
+            <li><code>vsp</code> <code>sp</code> <code>zoom</code> <code>pop</code> split, zoom, or pop panes out into their own window; linked panes follow the same coin</li>
+          </ul>
+          <p>
+            Still very much in progress.
           </p>
           <a class="project-link" href="https://terminal.incerto.app" target="_blank" rel="noopener">[terminal.incerto.app]</a>
         </div>
